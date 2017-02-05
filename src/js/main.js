@@ -50,8 +50,9 @@ const writeKeeexShare = (data, str) => {
 		.then(() => kxapi.keeex(filePath, [data.topic.idx], [], data.description, opt))
 		.then(keeexedFile => {
 			if (!data.shared || data.shared.length === 0) return ;
-			kxapi.share(keeexedFile.topic.idx, keeexedFile.path, data.shared, {email: false});
-		});
+			return kxapi.share(keeexedFile.topic.idx, keeexedFile.path, data.shared, {email: false});
+		})
+		.then(() => fs.unlink(filePath));
 };
 
 const generateMinutes = (idx, profileName) => getTopicAndComments(idx)
