@@ -25,5 +25,5 @@ module.exports = (data, profileName, config) => {
 	data.moment = require('moment');
 	data.moment.locale(profile.dateLocale);
 	getFormatedString(data, profile);
-	const str = generator[profile.generator](data, profile);
+	return generator[profile.generator](data, profile);
 };
