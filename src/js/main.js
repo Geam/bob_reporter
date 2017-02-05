@@ -8,12 +8,12 @@ const config = {
 	profile: {
 		default: {
 			fileName: {
-				str: "{NAME}_minutes_{DATE}.txt",
+				str: "{NAME}_minutes_{DATE}.html",
 			},
 			description: {
 				str: "{NAME} minutes {DATE}"
 			},
-			generator: "irc",
+			generator: "html",
 			options: {
 				comment: "{DATE} {NAME}> {MESSAGE}",
 				eol: "\n"
@@ -24,7 +24,7 @@ const config = {
 
 const getTopicAndComments = idx => Promise.all([
 	kxapi.getTopics([idx]),
-	kxapi.getComments(idx),
+	kxapi.getRefs(idx),
 	kxapi.getShared(idx)
 ])
 	.then(([topics, comments, shared]) => Promise.all([
@@ -47,6 +47,7 @@ const writeKeeexShare = (data, str) => {
 		description: data.description
 	};
 	return fs.writeFile(filePath, str, 'utf8')
+	//.then(() => Promise.reject("dev"))
 		.then(() => kxapi.keeex(filePath, [data.topic.idx], [], data.description, opt))
 		.then(keeexedFile => {
 			if (!data.shared || data.shared.length === 0) return ;

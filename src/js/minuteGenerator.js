@@ -1,5 +1,6 @@
 const generator = {
-	irc: require('./minuteGeneratorIRCStyle.js')
+	irc: require('./minuteGeneratorIRCStyle.js'),
+	html: require('./minuteGeneratorHTML.js')
 };
 
 const generateString = (data, input, date) => input.str

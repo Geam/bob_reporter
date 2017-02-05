@@ -28,6 +28,13 @@ const getLocations = idxs => new Promise((resolve, reject) => {
 	});
 });
 
+const getRefs = idxs => new Promise((resolve, reject) => {
+	kxapi.getRefs(idxs, (error, refs) => {
+		if (error) reject(`getLocations error: ${error}`);
+		resolve(refs);
+	});
+});
+
 const getShared = idx => new Promise((resolve, reject) => {
 	kxapi.getShared(idx, (error, shared) => {
 		if (error) reject(`getShared error: ${error}`);
@@ -78,6 +85,7 @@ module.exports = {
 	getShared,
 	getToken,
 	getTopics,
+	getRefs,
 	getUsers,
 	keeex,
 	share
