@@ -1,6 +1,6 @@
-module.exports = generateMinutesIRCStyle = (data, profile) => {
+module.exports = (data, profile) => {
 	const eol = profile.options.eol || '\n';
-	str = `Document: ${data.topic.name}${eol}`;
+	let str = `Document: ${data.topic.name}${eol}`;
 	str += `Created by: ${data.users[data.topic.author[0]].name}${eol}`;
 	str += `Creation date: ${data.topic.creationDate}${eol}`;
 	str += `Description:${eol}`;
