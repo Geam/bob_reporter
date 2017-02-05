@@ -1,0 +1,21 @@
+{
+  "name": "bob_reporter",
+  "version": "0.0.1",
+  "description": "Generate minutes of a discussion",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "keeex",
+    "meeting",
+    "minutes"
+  ],
+  "author": "Marc Delage",
+  "license": "ISC",
+  "dependencies": {
+    "keeex-api": "^0.2.1",
+    "moment": "^2.17.1",
+    "mz": "^2.6.0"
+  }
+}
