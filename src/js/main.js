@@ -1,4 +1,5 @@
-const path = require('path');
+if (typeof path === undefined)
+var path = require('path');
 const fs = require('mz/fs');
 const kxapi = require('./js/kxapiPromise.js');
 const minuteGenerator = require('./js/minuteGenerator.js');
@@ -59,9 +60,7 @@ const writeKeeexShare = (data, str) => {
 const generateMinutes = (idx, profileName) => getTopicAndComments(idx)
 	.then(data => Promise.all([data, minuteGenerator(data, profileName, config)]))
 	.then(([data, str]) => writeKeeexShare(data, str))
-	.then(ret => {
-		console.log("Minutes done !");
-	})
+	.then(ret => console.log("Minutes done !"))
 	.catch(console.log);
 
 const loadConfig = () => fs.readFile(config.path, 'utf8')
@@ -70,23 +69,31 @@ const loadConfig = () => fs.readFile(config.path, 'utf8')
 	.catch(err => {
 	});
 
-kxapi.getToken("bob reporter")
-	.then(() => Promise.all([
-		kxapi.getEnv("KEEEX_PATH"),
-		kxapi.getEnv("KEEEXED_PATH")
-	]))
-	.then(([configPath, keeexedPath]) => {
-		config.path = path.join(configPath.value, "plugins", pjson.name, "config");
-		config.defaultPath = path.join(keeexedPath.value, pjson.name);
-		return fs.mkdir(config.defaultPath)
-			.catch(err => {
-				if (err.code != 'EEXIST')
-					throw err;
-			});
-	})
-	.then(() => loadConfig())
-	.then(() => kxapi.currentView())
-	.then(topic => {
-		generateMinutes(topic.idx);
+const handleGenerateMinutesClick = () => kxapi.currentView()
+	.then(topic => generateMinutes(topic.idx))
+	.then(() => {
+		let el = document.querySelector("#done");
+		el.style.display = "";
+		setInterval(() => { el.style.display = "none"; }, 10000);
 	})
 	.catch(err => console.log(err));
+
+document.onreadystatechange = () => {
+	if (document.readyState !== "complete") return ;
+	kxapi.getToken("bob reporter")
+		.then(() => Promise.all([
+			kxapi.getEnv("KEEEX_PATH"),
+			kxapi.getEnv("KEEEXED_PATH")
+		]))
+		.then(([configPath, keeexedPath]) => {
+			config.path = path.join(configPath.value, "plugins", pjson.name, "config");
+			config.defaultPath = path.join(keeexedPath.value, pjson.name);
+			return fs.mkdir(config.defaultPath)
+				.catch(err => {
+					if (err.code != 'EEXIST')
+						throw err;
+				});
+		})
+		.then(() => loadConfig())
+		.catch(err => console.log(err));
+};

@@ -7,6 +7,13 @@ const currentView = () => new Promise((resolve, reject) => {
 	});
 });
 
+const getAgreements = idx => new Promise((resolve, reject) => {
+	kxapi.getAgreements(idx, (error, agreements) => {
+		if (error) reject(`getAgreements error: ${error}`);
+		resolve(agreements);
+	});
+});
+
 const getComments = idx => new Promise((resolve, reject) => {
 	kxapi.getComments(idx, (error, comments) => {
 		if (error) reject(`getComments error: ${error}`);
@@ -79,6 +86,7 @@ const share = (idx, path, recipients, options) => new Promise((resolve, reject) 
 
 module.exports = {
 	currentView,
+	getAgreements,
 	getComments,
 	getEnv,
 	getLocations,
