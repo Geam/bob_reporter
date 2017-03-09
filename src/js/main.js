@@ -25,10 +25,16 @@ const config = {
 
 const getTopicAndComments = idx => Promise.all([
 	kxapi.getTopics([idx]),
+	kxapi.getShared(idx),
 	kxapi.getRefs(idx),
-	kxapi.getShared(idx)
+	kxapi.getAgreements(idx)
 ])
-	.then(([topics, comments, shared]) => Promise.all([
+	.then(([topics, shared, comments, agreements]) => Promise.all([
+		topics,
+		shared,
+		comments.concat(agreements.filter(e => e))
+	]))
+	.then(([topics, shared, comments]) => Promise.all([
 		topics[0],
 		shared ? shared.shared : [],
 		comments.sort((a, b) =>
