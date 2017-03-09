@@ -1,4 +1,4 @@
-if (typeof path === undefined)
+if (typeof path === "undefined")
 var path = require('path');
 const fs = require('mz/fs');
 const kxapi = require('./js/kxapiPromise.js');
