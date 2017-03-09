@@ -14,11 +14,21 @@
 	margin-bottom: 1em;
 }
 
+.commentBox {
+	background-color: #e5e5e5;
+	padding: 1em;
+}
+
 .author {
 	color: red;
 }
 
 .comment {
+	display: flex;
+	flex-flow: row;
+}
+
+.comment:not(:last-child) {
 	margin-bottom: 1em;
 }
 
@@ -33,13 +43,26 @@
 
 .commentBody {
 	display: inline-block;
+	flex: 1 1 auto;
 	vertical-align: top;
-	width: 90%;
+	background-color: rgba(206,244,252,.8);
+	padding: 5px 10px;
+	border-radius: 5px;
+	word-break: break-word;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
+.commentBody.mine {
+	background-color: rgba(144,238,144,.5);
+}
+
+.self {
+	font-style: italic;
 }
 
 .avatar {
 	text-align: right;
-	width: 10%;
 	width: 50px;
 	height: 50px;
 	background-size: 50px 50px;

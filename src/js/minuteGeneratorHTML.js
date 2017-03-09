@@ -23,24 +23,35 @@ const documentHeader = (data, profile) => `<div class="documentHeader">` +
 	`<h1>${data.topic.name}</h1><div>` +
 	[
 		{ label: "Created by:", value: data.users[data.topic.author[0]].name },
+		{ label: "Idx:", value: data.topic.idx },
 		{ label: "Creation Date:", value: data.topic.creationDate },
 		{ label: "Description:", value: data.topic.description },
-		{ label: "Comments:", value: "" }
 	].reduce((acc, cur) => acc + headerElement(cur.label, cur.value), "") +
 	`</div></div>`;
 
+const getCommentContent = (data, comment) => {
+	if (comment.type === "file") {
+		return `<div><span class="self">has reference this topic from</span>` +
+			` ${comment.name}</div><div>${comment.idx}</div>`;
+	} else {
+		return `<div>${comment.name}</div>`;
+	}
+};
+
 const getComment = (data, profile, comment) => {
+	if (data.topic.idx === comment.idx) return "";
+	const mine = data.topic.author[0] === comment.author[0] && " mine";
 	commentDate = date => data.moment(date).format(profile.options.commentDateFormat);
 	return `<div class="comment"><div class="${comment.author[0]} avatar"></div>` +
-		`<div class="commentBody"><div class="commentHeader">` +
+		`<div class="commentBody ${mine}"><div class="commentHeader">` +
 		`<span class="author">${data.users[comment.author[0]].name}</span>` +
 		`&nbsp;<span class="commentDate">${commentDate(comment.creationDate)}</span>` +
-		`</div><div>${comment.name}</div></div></div>`;
+		`</div>${getCommentContent(data, comment)}</div></div>`;
 };
 
 const body = (data, profile) => '<body>' + documentHeader(data,profile) +
-	'<div>' + data.comments.reduce((acc, cur) => acc + getComment(data, profile, cur), "") +
-	'</div></body>';
+	'<div class="commentBox">' + data.comments.reduce((acc, cur) =>
+		acc + getComment(data, profile, cur), "") + '</div></body>';
 
 const loadUsersAvatar = data => {
 	const promiseSerie = w => w.reduce((q, fn) => q.then(fn), Promise.resolve());

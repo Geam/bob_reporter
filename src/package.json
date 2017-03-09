@@ -1,6 +1,6 @@
 {
   "name": "bob_reporter",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Generate minutes of a discussion",
   "main": "index.html",
   "icon": "icon.png",
