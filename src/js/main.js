@@ -1,9 +1,16 @@
-if (typeof path === "undefined")
-var path = require('path');
+const path = require('path');
 const fs = require('mz/fs');
 const kxapi = require('./js/kxapiPromise.js');
 const minuteGenerator = require('./js/minuteGenerator.js');
 const pjson = require('./package.json');
+
+const escapeFileName = fileName => {
+	if (process.platform === "win32") {
+		return fileName.replace(/[<>:"/\\|?*]/g, '');
+	} else {
+		return fileName.replace(/\//g, '');
+	}
+};
 
 const config = {
 	profile: {
@@ -46,11 +53,11 @@ const getTopicAndComments = idx => Promise.all([
 		users: users.reduce((acc, cur) => (acc[cur.profileIdx] = cur, acc), {})}));
 
 const writeKeeexShare = (data, str) => {
-	const filePath = path.join(config.defaultPath, data.fileName);
+	const filePath = path.join(config.defaultPath, escapeFileName(data.fileName));
 	const opt = {
 		targetFolder: config.defaultPath,
 		timestamp: false,
-		name: data.fileName,
+		name: escapeFileName(data.fileName),
 		description: data.description
 	};
 	return fs.writeFile(filePath, str, 'utf8')

@@ -31,7 +31,7 @@ const documentHeader = (data, profile) => `<div class="documentHeader">` +
 
 const getCommentContent = (data, comment) => {
 	if (comment.type === "file") {
-		return `<div><span class="self">has reference this topic from</span>` +
+		return `<div><span class="self">linked</span>` +
 			` ${comment.name}</div><div>${comment.idx}</div>`;
 	} else {
 		return `<div>${comment.name}</div>`;
